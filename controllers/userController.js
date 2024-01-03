@@ -22,15 +22,17 @@ const autenticar = async (req, res) => {
   }
 
   // Comprobar password
-  if (await User.findOne({ email, password })) {
-    // Almacena la información del usuario en la sesión
-    req.session.user = {
+  if (await usuario.comprobarPassword(password)) {
+    res.json({
       _id: usuario._id,
-      nombre: usuario.first_name,
+      first_name: usuario.first_name,
+      last_name: usuario.last_name,
+      age: usuario.age,
       email: usuario.email,
       rol: usuario.rol,
-    };
-    return res.redirect("/api/users/productos");
+    });
+
+    //return res.redirect("/api/users/productos");
   } else {
     const error = new Error("El password es incorrecto");
     return res.status(403).json({ msg: error.message });

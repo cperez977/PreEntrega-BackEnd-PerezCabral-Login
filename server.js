@@ -9,6 +9,9 @@ import productosRoutes from "./routes/productosRoutes.js";
 import carritosRoutes from "./routes/carritosRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import session from "express-session";
+import passport from "passport";
+import github from "./routes/github.js";
+import "./middlewares/github.js"
 
 dotenv.config();
 const app = express();
@@ -16,6 +19,10 @@ const app = express();
 app.use(
   session({ secret: "tu_secreto", resave: true, saveUninitialized: true })
 );
+
+app.use(passport.initialize());
+
+app.use("/auth", github);
 
 app.use(express.static("public"));
 
